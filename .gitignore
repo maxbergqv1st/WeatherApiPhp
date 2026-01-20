@@ -1,0 +1,13 @@
+# Miljövariabler (Här ligger din API-nyckel!)
+.env
+WEATHER_API_KEY=9620f44df02e4c599d8155136262001
+# Beroenden (Om du börjar använda Composer)
+/vendor/
+
+# Operativsystem-filer
+.DS_Store
+Thumbs.db
+
+# IDE-inställningar
+.vscode/
+.idea/

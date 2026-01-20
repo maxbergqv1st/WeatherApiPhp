@@ -3,26 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Weather Dev</title>
+  <link rel="stylesheet" href="public/css/style.css">
 </head>
-<body>
-  <?php 
-  ?>
+    <body>
+        <?php
+// index.php
 
-  <?php
-  $apiKey = "";
-  $city = "Halmstad";
-  $url = "http://api.weatherapi.com/v1/current.json?key=$apiKey&q=$city";
+// 1. LADDA LOGIK
+require 'env_loader.php';
+require 'src/api.php'; 
 
-  // Hämta data som en JSON-sträng
-  $response = file_get_contents($url);
+// 2. HÄMTA DATA
+$city = $_GET['city'] ?? 'Halmstad';
+$data = getWeatherData($city); 
 
-  // Omvandla JSON-strängen till en PHP-array
-  $data = json_decode($response, true);
+$favoriteCities = ['Halmstad', 'Budapest', 'Miami'];
+$multiData = [];
+foreach ($favoriteCities as $fav) {
+    $multiData[] = getWeatherData($fav);
+}
 
-  // Visa en specifik del av datan, t.ex. temperaturen
-  echo "Just nu är det " . $data['current']['temp_c'] . " grader i " . $data['location']['name'];
-  ?>
-  
-</body>
+$page = $_GET['page'] ?? 'home';
+
+// 3. RENDER (Här ritar vi ut sidan)
+// header.php innehåller <!DOCTYPE>, <html>, <head> och <body>
+include 'views/layout/header.php'; 
+
+echo "<main>";
+    switch($page) {
+        case 'api_model':
+            include 'views/api_model_view.php';
+            break;
+        case 'home':
+        default:
+            include 'views/home_view.php';
+            break;
+    }
+echo "</main>";
+
+// footer.php innehåller </body> och </html>
+include 'views/layout/footer.php'; 
+?>
+    </body>
 </html>
+
+
